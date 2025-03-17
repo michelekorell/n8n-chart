@@ -42,6 +42,18 @@ spec:
               value: {{ .Values.ingress.hosts | first | pluck "host" | first }}
             - name: N8N_PROTOCOL
               value: {{ if .Values.ingress.tls }}https{{ else }}http{{ end }}
+            {{- if .Values.ingress.tls }}
+            - name: WEBHOOK_URL
+              value: "https://{{ .Values.ingress.hosts | first | pluck "host" | first }}"
+            - name: N8N_ENDPOINT_REST
+              value: "rest"
+            - name: N8N_ENDPOINT_WEBHOOK
+              value: "webhook"
+            - name: N8N_ENDPOINT_WEBHOOK_TEST
+              value: "webhook-test"
+            - name: N8N_ENDPOINT_WEBHOOK_WAIT
+              value: "webhook-waiting"
+            {{- end }}
             {{- else }}
             - name: N8N_HOST
               value: {{ include "n8n.fullname" . }}
