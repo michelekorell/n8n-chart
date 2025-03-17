@@ -44,9 +44,11 @@ spec:
               value: {{ if .Values.ingress.tls }}https{{ else }}http{{ end }}
             {{- else }}
             - name: N8N_HOST
-              value: {{ include "n8n.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+              value: {{ include "n8n.fullname" . }}
             - name: N8N_PROTOCOL
               value: http
+            - name: N8N_PORT
+              value: {{ .Values.service.port | quote }}
             {{- end }}
             {{- if .Values.n8n.basicAuth.enabled }}
             - name: N8N_BASIC_AUTH_ACTIVE
