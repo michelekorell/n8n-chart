@@ -75,21 +75,32 @@ ingress:
 
 resources:
   limits:
-    cpu: 1000m
-    memory: 1024Mi
+    cpu: 2000m
+    memory: 4096Mi
   requests:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 500m
+    memory: 512Mi
 
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   httpGet:
     path: /
     port: http
+  initialDelaySeconds: 60
+  periodSeconds: 10
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 3
+
 readinessProbe:
   httpGet:
     path: /
     port: http
+  initialDelaySeconds: 60
+  periodSeconds: 10
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 3
 
 #This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
@@ -122,7 +133,7 @@ persistence:
   enabled: true
   storageClass: ""
   accessMode: ReadWriteOnce
-  size: 10Gi
+  size: 20Gi
 
 n8n:
   encryption:
@@ -153,3 +164,109 @@ n8n:
     password: ""
     sender: ""
     ssl: false
+  # New configuration options for n8n 1.24.0
+  webhook:
+    enabled: true
+    timeout: 10000
+  execution:
+    timeout: 3600
+    maxTimeout: 7200
+  generic:
+    timezone: UTC
+    dateFormat: "YYYY-MM-DD"
+    timeFormat: "HH:mm:ss"
+  security:
+    excludeEndpoints: ""
+    basicAuth:
+      active: false
+      user: ""
+      password: ""
+  nodes:
+    exclude: ""
+    include: ""
+  telemetry:
+    enabled: false
+  logs:
+    level: info
+    output: console
+  editor:
+    baseUrl: ""
+  workflow:
+    tags:
+      disabled: false
+    callPolicy:
+      enabled: false
+      allowedDomains: ""
+    sharing:
+      enabled: true
+    history:
+      pruned: false
+      maxAge: 24
+    defaultSettings:
+      saveExecutionData: true
+      saveManualExecutions: true
+      saveDataErrorExecution: "all"
+      saveDataSuccessExecution: "all"
+      executionTimeout: 3600
+      timezone: UTC
+      saveDataErrorExecutionAll: false
+      saveDataSuccessExecutionAll: false
+  # New settings for n8n 1.82.3
+  binaryData:
+    maxSize: 10485760  # 10MB in bytes
+    ttl: 3600  # 1 hour in seconds
+  queue:
+    bull:
+      redis:
+        host: ""
+        port: 6379
+        password: ""
+        db: 0
+      prefix: "n8n"
+      defaultJobOptions:
+        attempts: 3
+        backoff:
+          type: "exponential"
+          delay: 1000
+  rateLimit:
+    max: 60
+    windowMs: 60000
+  security:
+    excludeEndpoints: ""
+    basicAuth:
+      active: false
+      user: ""
+      password: ""
+    jwt:
+      secret: ""
+      expiresIn: "7d"
+    ldap:
+      enabled: false
+      url: ""
+      bindDn: ""
+      bindCredentials: ""
+      searchBase: ""
+      searchFilter: ""
+      groupSearchBase: ""
+      groupSearchFilter: ""
+    saml:
+      enabled: false
+      entryPoint: ""
+      issuer: ""
+      cert: ""
+      key: ""
+      callbackUrl: ""
+      wantAssertionsSigned: true
+      wantResponseSigned: true
+      wantAuthnResponseSigned: true
+      signatureValidationType: "sha256"
+      allowedClockDrift: 0
+      identifierFormat: "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+      authnRequestBinding: "HTTP-POST"
+      logoutRequestBinding: "HTTP-Redirect"
+      logoutResponseBinding: "HTTP-POST"
+      skipRequestCompression: false
+      acceptedClockSkewMs: 0
+      disableRequestedAuthnContext: false
+      scoping:
+        allowIdpInitiated: false

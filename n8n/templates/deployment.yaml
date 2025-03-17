@@ -104,6 +104,155 @@ spec:
             - name: N8N_SMTP_SSL
               value: {{ .Values.n8n.smtp.ssl | quote }}
             {{- end }}
+            # Environment variables for n8n 1.82.3
+            - name: N8N_WEBHOOK_TIMEOUT
+              value: {{ .Values.n8n.webhook.timeout | quote }}
+            - name: N8N_EXECUTION_TIMEOUT
+              value: {{ .Values.n8n.execution.timeout | quote }}
+            - name: N8N_EXECUTION_MAX_TIMEOUT
+              value: {{ .Values.n8n.execution.maxTimeout | quote }}
+            - name: N8N_GENERIC_TIMEZONE
+              value: {{ .Values.n8n.generic.timezone }}
+            - name: N8N_GENERIC_DATE_FORMAT
+              value: {{ .Values.n8n.generic.dateFormat | quote }}
+            - name: N8N_GENERIC_TIME_FORMAT
+              value: {{ .Values.n8n.generic.timeFormat | quote }}
+            - name: N8N_SECURITY_EXCLUDE_ENDPOINTS
+              value: {{ .Values.n8n.security.excludeEndpoints | quote }}
+            - name: N8N_NODES_EXCLUDE
+              value: {{ .Values.n8n.nodes.exclude | quote }}
+            - name: N8N_NODES_INCLUDE
+              value: {{ .Values.n8n.nodes.include | quote }}
+            - name: N8N_TELEMETRY_ENABLED
+              value: {{ .Values.n8n.telemetry.enabled | quote }}
+            - name: N8N_LOGS_LEVEL
+              value: {{ .Values.n8n.logs.level }}
+            - name: N8N_LOGS_OUTPUT
+              value: {{ .Values.n8n.logs.output }}
+            - name: N8N_EDITOR_BASE_URL
+              value: {{ .Values.n8n.editor.baseUrl | quote }}
+            - name: N8N_WORKFLOW_TAGS_DISABLED
+              value: {{ .Values.n8n.workflow.tags.disabled | quote }}
+            - name: N8N_WORKFLOW_CALL_POLICY_ENABLED
+              value: {{ .Values.n8n.workflow.callPolicy.enabled | quote }}
+            - name: N8N_WORKFLOW_CALL_POLICY_ALLOWED_DOMAINS
+              value: {{ .Values.n8n.workflow.callPolicy.allowedDomains | quote }}
+            - name: N8N_WORKFLOW_SHARING_ENABLED
+              value: {{ .Values.n8n.workflow.sharing.enabled | quote }}
+            - name: N8N_WORKFLOW_HISTORY_PRUNED
+              value: {{ .Values.n8n.workflow.history.pruned | quote }}
+            - name: N8N_WORKFLOW_HISTORY_MAX_AGE
+              value: {{ .Values.n8n.workflow.history.maxAge | quote }}
+            - name: N8N_WORKFLOW_DEFAULT_SETTINGS_SAVE_EXECUTION_DATA
+              value: {{ .Values.n8n.workflow.defaultSettings.saveExecutionData | quote }}
+            - name: N8N_WORKFLOW_DEFAULT_SETTINGS_SAVE_MANUAL_EXECUTIONS
+              value: {{ .Values.n8n.workflow.defaultSettings.saveManualExecutions | quote }}
+            - name: N8N_WORKFLOW_DEFAULT_SETTINGS_SAVE_DATA_ERROR_EXECUTION
+              value: {{ .Values.n8n.workflow.defaultSettings.saveDataErrorExecution | quote }}
+            - name: N8N_WORKFLOW_DEFAULT_SETTINGS_SAVE_DATA_SUCCESS_EXECUTION
+              value: {{ .Values.n8n.workflow.defaultSettings.saveDataSuccessExecution | quote }}
+            - name: N8N_WORKFLOW_DEFAULT_SETTINGS_EXECUTION_TIMEOUT
+              value: {{ .Values.n8n.workflow.defaultSettings.executionTimeout | quote }}
+            - name: N8N_WORKFLOW_DEFAULT_SETTINGS_TIMEZONE
+              value: {{ .Values.n8n.workflow.defaultSettings.timezone }}
+            - name: N8N_WORKFLOW_DEFAULT_SETTINGS_SAVE_DATA_ERROR_EXECUTION_ALL
+              value: {{ .Values.n8n.workflow.defaultSettings.saveDataErrorExecutionAll | quote }}
+            - name: N8N_WORKFLOW_DEFAULT_SETTINGS_SAVE_DATA_SUCCESS_EXECUTION_ALL
+              value: {{ .Values.n8n.workflow.defaultSettings.saveDataSuccessExecutionAll | quote }}
+            # New environment variables for n8n 1.82.3
+            - name: N8N_BINARY_DATA_MAX_SIZE
+              value: {{ .Values.n8n.binaryData.maxSize | quote }}
+            - name: N8N_BINARY_DATA_TTL
+              value: {{ .Values.n8n.binaryData.ttl | quote }}
+            {{- if .Values.n8n.queue.bull.redis.host }}
+            - name: N8N_QUEUE_BULL_REDIS_HOST
+              value: {{ .Values.n8n.queue.bull.redis.host }}
+            - name: N8N_QUEUE_BULL_REDIS_PORT
+              value: {{ .Values.n8n.queue.bull.redis.port | quote }}
+            - name: N8N_QUEUE_BULL_REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "n8n.fullname" . }}
+                  key: redis-password
+            - name: N8N_QUEUE_BULL_REDIS_DB
+              value: {{ .Values.n8n.queue.bull.redis.db | quote }}
+            - name: N8N_QUEUE_BULL_PREFIX
+              value: {{ .Values.n8n.queue.bull.prefix | quote }}
+            {{- end }}
+            - name: N8N_RATE_LIMIT_MAX
+              value: {{ .Values.n8n.rateLimit.max | quote }}
+            - name: N8N_RATE_LIMIT_WINDOW_MS
+              value: {{ .Values.n8n.rateLimit.windowMs | quote }}
+            {{- if .Values.n8n.security.jwt.secret }}
+            - name: N8N_SECURITY_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "n8n.fullname" . }}
+                  key: jwt-secret
+            - name: N8N_SECURITY_JWT_EXPIRES_IN
+              value: {{ .Values.n8n.security.jwt.expiresIn | quote }}
+            {{- end }}
+            {{- if .Values.n8n.security.ldap.enabled }}
+            - name: N8N_SECURITY_LDAP_ENABLED
+              value: "true"
+            - name: N8N_SECURITY_LDAP_URL
+              value: {{ .Values.n8n.security.ldap.url }}
+            - name: N8N_SECURITY_LDAP_BIND_DN
+              value: {{ .Values.n8n.security.ldap.bindDn }}
+            - name: N8N_SECURITY_LDAP_BIND_CREDENTIALS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "n8n.fullname" . }}
+                  key: ldap-bind-credentials
+            - name: N8N_SECURITY_LDAP_SEARCH_BASE
+              value: {{ .Values.n8n.security.ldap.searchBase }}
+            - name: N8N_SECURITY_LDAP_SEARCH_FILTER
+              value: {{ .Values.n8n.security.ldap.searchFilter }}
+            - name: N8N_SECURITY_LDAP_GROUP_SEARCH_BASE
+              value: {{ .Values.n8n.security.ldap.groupSearchBase }}
+            - name: N8N_SECURITY_LDAP_GROUP_SEARCH_FILTER
+              value: {{ .Values.n8n.security.ldap.groupSearchFilter }}
+            {{- end }}
+            {{- if .Values.n8n.security.saml.enabled }}
+            - name: N8N_SECURITY_SAML_ENABLED
+              value: "true"
+            - name: N8N_SECURITY_SAML_ENTRY_POINT
+              value: {{ .Values.n8n.security.saml.entryPoint }}
+            - name: N8N_SECURITY_SAML_ISSUER
+              value: {{ .Values.n8n.security.saml.issuer }}
+            - name: N8N_SECURITY_SAML_CERT
+              value: {{ .Values.n8n.security.saml.cert }}
+            - name: N8N_SECURITY_SAML_KEY
+              value: {{ .Values.n8n.security.saml.key }}
+            - name: N8N_SECURITY_SAML_CALLBACK_URL
+              value: {{ .Values.n8n.security.saml.callbackUrl }}
+            - name: N8N_SECURITY_SAML_WANT_ASSERTIONS_SIGNED
+              value: {{ .Values.n8n.security.saml.wantAssertionsSigned | quote }}
+            - name: N8N_SECURITY_SAML_WANT_RESPONSE_SIGNED
+              value: {{ .Values.n8n.security.saml.wantResponseSigned | quote }}
+            - name: N8N_SECURITY_SAML_WANT_AUTHN_RESPONSE_SIGNED
+              value: {{ .Values.n8n.security.saml.wantAuthnResponseSigned | quote }}
+            - name: N8N_SECURITY_SAML_SIGNATURE_VALIDATION_TYPE
+              value: {{ .Values.n8n.security.saml.signatureValidationType }}
+            - name: N8N_SECURITY_SAML_ALLOWED_CLOCK_DRIFT
+              value: {{ .Values.n8n.security.saml.allowedClockDrift | quote }}
+            - name: N8N_SECURITY_SAML_IDENTIFIER_FORMAT
+              value: {{ .Values.n8n.security.saml.identifierFormat }}
+            - name: N8N_SECURITY_SAML_AUTHN_REQUEST_BINDING
+              value: {{ .Values.n8n.security.saml.authnRequestBinding }}
+            - name: N8N_SECURITY_SAML_LOGOUT_REQUEST_BINDING
+              value: {{ .Values.n8n.security.saml.logoutRequestBinding }}
+            - name: N8N_SECURITY_SAML_LOGOUT_RESPONSE_BINDING
+              value: {{ .Values.n8n.security.saml.logoutResponseBinding }}
+            - name: N8N_SECURITY_SAML_SKIP_REQUEST_COMPRESSION
+              value: {{ .Values.n8n.security.saml.skipRequestCompression | quote }}
+            - name: N8N_SECURITY_SAML_ACCEPTED_CLOCK_SKEW_MS
+              value: {{ .Values.n8n.security.saml.acceptedClockSkewMs | quote }}
+            - name: N8N_SECURITY_SAML_DISABLE_REQUESTED_AUTHN_CONTEXT
+              value: {{ .Values.n8n.security.saml.disableRequestedAuthnContext | quote }}
+            - name: N8N_SECURITY_SAML_SCOPING_ALLOW_IDP_INITIATED
+              value: {{ .Values.n8n.security.saml.scoping.allowIdpInitiated | quote }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 5678
