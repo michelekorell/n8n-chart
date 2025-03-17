@@ -1,0 +1,147 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "n8n.fullname" . }}
+  labels:
+    {{- include "n8n.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "n8n.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "n8n.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "n8n.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: N8N_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "n8n.fullname" . }}
+                  key: encryption-key
+            {{- if .Values.n8n.basicAuth.enabled }}
+            - name: N8N_BASIC_AUTH_ACTIVE
+              value: "true"
+            - name: N8N_BASIC_AUTH_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "n8n.fullname" . }}
+                  key: basic-auth-user
+            - name: N8N_BASIC_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "n8n.fullname" . }}
+                  key: basic-auth-password
+            {{- end }}
+            {{- if eq .Values.n8n.database.type "postgresdb" }}
+            - name: DB_TYPE
+              value: postgresdb
+            - name: DB_POSTGRESDB_HOST
+              value: {{ .Values.n8n.database.postgresdb.host }}
+            - name: DB_POSTGRESDB_PORT
+              value: {{ .Values.n8n.database.postgresdb.port | quote }}
+            - name: DB_POSTGRESDB_DATABASE
+              value: {{ .Values.n8n.database.postgresdb.database }}
+            - name: DB_POSTGRESDB_USER
+              value: {{ .Values.n8n.database.postgresdb.user }}
+            - name: DB_POSTGRESDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "n8n.fullname" . }}
+                  key: database-password
+            {{- end }}
+            {{- if eq .Values.n8n.database.type "mysqldb" }}
+            - name: DB_TYPE
+              value: mysqldb
+            - name: DB_MYSQLDB_HOST
+              value: {{ .Values.n8n.database.mysqldb.host }}
+            - name: DB_MYSQLDB_PORT
+              value: {{ .Values.n8n.database.mysqldb.port | quote }}
+            - name: DB_MYSQLDB_DATABASE
+              value: {{ .Values.n8n.database.mysqldb.database }}
+            - name: DB_MYSQLDB_USER
+              value: {{ .Values.n8n.database.mysqldb.user }}
+            - name: DB_MYSQLDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "n8n.fullname" . }}
+                  key: database-password
+            {{- end }}
+            {{- if .Values.n8n.smtp.enabled }}
+            - name: N8N_EMAIL_MODE
+              value: smtp
+            - name: N8N_SMTP_HOST
+              value: {{ .Values.n8n.smtp.host }}
+            - name: N8N_SMTP_PORT
+              value: {{ .Values.n8n.smtp.port | quote }}
+            - name: N8N_SMTP_USER
+              value: {{ .Values.n8n.smtp.user }}
+            - name: N8N_SMTP_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "n8n.fullname" . }}
+                  key: smtp-password
+            - name: N8N_SMTP_SENDER
+              value: {{ .Values.n8n.smtp.sender }}
+            - name: N8N_SMTP_SSL
+              value: {{ .Values.n8n.smtp.ssl | quote }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 5678
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /home/node/.n8n
+      volumes:
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "n8n.fullname" . }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
