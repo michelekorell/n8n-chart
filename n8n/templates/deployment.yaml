@@ -37,6 +37,17 @@ spec:
                 secretKeyRef:
                   name: {{ include "n8n.fullname" . }}
                   key: encryption-key
+            {{- if .Values.ingress.enabled }}
+            - name: N8N_HOST
+              value: {{ .Values.ingress.hosts | first | pluck "host" | first }}
+            - name: N8N_PROTOCOL
+              value: {{ if .Values.ingress.tls }}https{{ else }}http{{ end }}
+            {{- else }}
+            - name: N8N_HOST
+              value: {{ include "n8n.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+            - name: N8N_PROTOCOL
+              value: http
+            {{- end }}
             {{- if .Values.n8n.basicAuth.enabled }}
             - name: N8N_BASIC_AUTH_ACTIVE
               value: "true"
