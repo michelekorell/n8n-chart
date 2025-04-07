@@ -7,11 +7,16 @@ replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: n8nio/n8n
+  repository: docker.n8n.io/n8nio/n8n
+  # You can choose from the following versions:
+  # - latest
+  # - 1.85.4
+  # - 1.84.3
+  # - 1.83.2
+  # - 1.82.3
+  tag: "latest"
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""  # Defaults to appVersion in Chart.yaml
 
 # This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -80,7 +85,7 @@ ingress:
 
 resources:
   limits:
-    cpu: 2000m
+    cpu: 1000m
     memory: 4096Mi
   requests:
     cpu: 500m

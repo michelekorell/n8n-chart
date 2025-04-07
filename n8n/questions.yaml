@@ -1,0 +1,41 @@
+questions:
+  - variable: image.tag
+    label: n8n Version
+    description: Select the n8n version to deploy
+    type: enum
+    required: true
+    default: "latest"
+    options:
+      - "latest"
+      - "1.85.4"
+      - "1.84.3"
+      - "1.83.2"
+      - "1.82.3"
+  - variable: n8n.encryption.key
+    label: Encryption Key
+    description: Required encryption key for n8n data
+    type: password
+    required: true
+  - variable: ingress.enabled
+    label: Enable Ingress
+    description: Enable ingress for external access
+    type: boolean
+    default: true
+  - variable: ingress.hosts[0].host
+    label: Ingress Host
+    description: Domain name for the ingress
+    type: string
+    required: true
+    show_subquestion_if: ingress.enabled
+  - variable: ingress.tls[0].secretName
+    label: TLS Secret Name
+    description: Name of the TLS secret for HTTPS
+    type: string
+    required: true
+    show_subquestion_if: ingress.enabled
+  - variable: ingress.annotations.cert-manager\.io/cluster-issuer
+    label: Cluster Issuer
+    description: cert-manager cluster issuer for TLS certificates
+    type: string
+    required: true
+    show_subquestion_if: ingress.enabled 
