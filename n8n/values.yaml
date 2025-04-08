@@ -63,24 +63,21 @@ service:
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
-  enabled: true  # Set to true to enable ingress
-  className: nginx  # Your ingress class name
+  enabled: true
+  className: nginx
   annotations:
     cert-manager.io/cluster-issuer: your-actual-issuer-name
     kubernetes.io/ingress.class: nginx
-    # For SSL/TLS
-    # kubernetes.io/tls-acme: "true"
-    # For specific ingress controller settings
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
   hosts:
-    - host: your-actual-domain.com  # Replace with your actual domain
+    - host: ""  # Will be set by questions.yaml
       paths:
         - path: /
           pathType: Prefix
-  tls:  # Enable TLS by adding your secret
+  tls:
     - hosts:
-        - your-actual-domain.com
+        - ""  # Will be set by questions.yaml
 
 resources:
   limits:

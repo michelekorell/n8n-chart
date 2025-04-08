@@ -15,25 +15,19 @@ spec:
   {{- if .Values.ingress.className }}
   ingressClassName: {{ .Values.ingress.className }}
   {{- end }}
-  {{- if .Values.ingress.tls }}
   tls:
     - hosts:
-        - {{ .Values.ingress.hosts | first | pluck "host" | first }}
+        - {{ (index .Values.ingress.hosts 0).host }}
       secretName: {{ $fullName }}-tls-secret
-  {{- end }}
   rules:
-    {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ (index .Values.ingress.hosts 0).host | quote }}
       http:
         paths:
-          {{- range .paths }}
-          - path: {{ .path }}
-            pathType: {{ .pathType }}
+          - path: /
+            pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}
                 port:
                   number: {{ $svcPort }}
-          {{- end }}
-    {{- end }}
 {{- end }}
