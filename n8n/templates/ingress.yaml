@@ -1,39 +1,19 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "n8n.fullname" . -}}
-{{- $svcPort := .Values.service.port -}}
-{{- /* pull in host value from the host array */ -}}
-{{- $host := index .Values.ingress.hosts 0 "host" -}}
-
-{{- /* Inject certManagerIssuer into the annotations */ -}}
-{{- if .Values.certManagerIssuer }}
-  {{- $_ := set .Values.ingress.annotations "cert-manager.io/cluster-issuer" .Values.certManagerIssuer -}}
-{{- end }}
-
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: {{ $fullName }}
-  labels:
-    {{- include "n8n.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
+ingress:
   annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-spec:
-  ingressClassName: {{ .Values.ingress.className }}
+    cert-manager.io/cluster-issuer: intranet-sig-lan-ca-issuer
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+  className: nginx
+  enabled: true
+  hosts:
+    - host: {{ .Values.ingress.domainName }}
+      paths:
+        - path: /
+          pathType: Prefix
   tls:
     - hosts:
-        - {{ $host }}
-      secretName: {{ $fullName }}-secret-tls
-  rules:
-    - host: {{ $host }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ $fullName }}
-                port:
-                  number: {{ $svcPort }}
+        - {{ .Values.ingress.domainName }}
+      secretName: {{ .Release.Name }}-secret-tls
 {{- end }}
