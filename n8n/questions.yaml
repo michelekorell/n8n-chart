@@ -17,9 +17,9 @@ questions:
     type: string
     required: true
     default: "n8n.local"
-  - variable: ingress.annotations.cert-manager\.io/cluster-issuer
+  - variable: "ingress.annotations.cert-manager.io/cluster-issuer"
     label: Cluster Issuer
     description: Name of the cert-manager cluster issuer
     type: string
     required: true
-    default: "intranet-sig-lan-ca-issuer" 
+    default: "intranet-sig-lan-ca-issuer"
