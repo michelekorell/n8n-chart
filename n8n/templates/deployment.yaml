@@ -42,10 +42,8 @@ spec:
               value: {{ .Values.ingress.domainName }}
             - name: N8N_PROTOCOL
               value: https
-            - name: N8N_ENDPOINT_WEBHOOK
-              value: https://{{ .Values.ingress.domainName }}
-            - name: N8N_ENDPOINT_REST
-              value: https://{{ .Values.ingress.domainName }}
+            - name: WEBHOOK_URL
+              value: https://{{ .Values.ingress.domainName }}/
             {{- else }}
             - name: N8N_HOST
               value: {{ include "n8n.fullname" . }}
