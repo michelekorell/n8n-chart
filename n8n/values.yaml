@@ -71,13 +71,13 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
   hosts:
-    - host: "n8n.local"  # Default value that will be overridden by questions.yaml
+    - host: n8n.local
       paths:
         - path: /
           pathType: Prefix
   tls:
     - hosts:
-        - "n8n.local"  # Default value that will be overridden by questions.yaml
+        - n8n.local
 
 resources:
   limits:

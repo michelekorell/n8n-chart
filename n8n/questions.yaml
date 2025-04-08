@@ -16,4 +16,4 @@ questions:
     description: Your domain name (e.g., n8n.yourdomain.com)
     type: string
     required: true
-    default: "your-actual-domain.com" 
+    default: "n8n.local" 
