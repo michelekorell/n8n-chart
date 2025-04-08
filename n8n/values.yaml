@@ -79,8 +79,7 @@ ingress:
         - path: /
           pathType: Prefix
   tls:  # Enable TLS by adding your secret
-    - secretName: your-actual-tls-secret-name
-      hosts:
+    - hosts:
         - your-actual-domain.com
 
 resources:

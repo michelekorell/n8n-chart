@@ -10,4 +10,10 @@ questions:
       - "1.85.4"
       - "1.84.3"
       - "1.83.2"
-      - "1.82.3" 
+      - "1.82.3"
+  - variable: ingress.hosts[0].host
+    label: Ingress Host
+    description: Your domain name (e.g., n8n.yourdomain.com)
+    type: string
+    required: true
+    default: "your-actual-domain.com" 
