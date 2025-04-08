@@ -50,7 +50,7 @@ ingress:
   tls:
     - hosts:
         - n8n.local
-      secretName: n8n-tls
+      secretName: n8n-secret-tls
 
 resources:
   limits:

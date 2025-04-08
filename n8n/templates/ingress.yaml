@@ -1,7 +1,14 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "n8n.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
-{{- $host := .Values.ingress.host -}}
+{{- /* pull in host value from the host array */ -}}
+{{- $host := index .Values.ingress.hosts 0 "host" -}}
+
+{{- /* Inject certManagerIssuer into the annotations */ -}}
+{{- if .Values.certManagerIssuer }}
+  {{- $_ := set .Values.ingress.annotations "cert-manager.io/cluster-issuer" .Values.certManagerIssuer -}}
+{{- end }}
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
