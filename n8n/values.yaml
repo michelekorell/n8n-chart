@@ -77,7 +77,7 @@ ingress:
           pathType: Prefix
   tls:
     - hosts:
-        - ""  # Will be automatically set to match ingress host
+        - ""  # Will be set to match ingress host
 
 resources:
   limits:

@@ -16,10 +16,4 @@ questions:
     description: Your domain name (e.g., n8n.yourdomain.com)
     type: string
     required: true
-    default: ""
-  - variable: ingress.tls[0].hosts[0]
-    label: TLS Host
-    description: TLS host (should match Ingress Host)
-    type: string
-    required: true
-    default: "" 
+    default: "n8n.local" 
