@@ -1,7 +1,6 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "n8n.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
-{{- $host := (index .Values.ingress.hosts 0).host -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -13,15 +12,13 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if .Values.ingress.className }}
   ingressClassName: {{ .Values.ingress.className }}
-  {{- end }}
   tls:
     - hosts:
-        - {{ $host }}
-      secretName: {{ $fullName }}-tls-secret
+        - {{ .Values.ingress.host }}
+      secretName: {{ $fullName }}-tls
   rules:
-    - host: {{ $host | quote }}
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
           - path: /
