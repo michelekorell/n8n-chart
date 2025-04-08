@@ -39,12 +39,12 @@ spec:
                   key: encryption-key
             {{- if .Values.ingress.enabled }}
             - name: N8N_HOST
-              value: {{ .Values.ingress.hosts | first | pluck "host" | first }}
+              value: {{ .Values.ingress.host }}
             - name: N8N_PROTOCOL
               value: {{ if .Values.ingress.tls }}https{{ else }}http{{ end }}
             {{- if .Values.ingress.tls }}
             - name: WEBHOOK_URL
-              value: "https://{{ .Values.ingress.hosts | first | pluck "host" | first }}"
+              value: "https://{{ .Values.ingress.host }}"
             - name: N8N_ENDPOINT_REST
               value: "rest"
             - name: N8N_ENDPOINT_WEBHOOK
