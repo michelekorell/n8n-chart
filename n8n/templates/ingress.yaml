@@ -1,32 +1,22 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "n8n.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
-{{- $host := .Values.ingress.host -}}
 apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: {{ $fullName }}
-  labels:
-    {{- include "n8n.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
+ingress:
   annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-spec:
-  ingressClassName: {{ .Values.ingress.className }}
+    cert-manager.io/cluster-issuer: intranet-sig-lan-ca-issuer
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+  className: nginx
+  enabled: true
+  hosts:
+    - host: n8n.intranet.sig.lan
+      paths:
+        - path: /
+          pathType: Prefix
   tls:
     - hosts:
-        - {{ $host }}
-      secretName: {{ $fullName }}-secret-tls
-  rules:
-    - host: {{ $host }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ $fullName }}
-                port:
-                  number: {{ $svcPort }}
+        - n8n.intranet.sig.lan
+      secretName: n8n-secret-tls
 {{- end }}
