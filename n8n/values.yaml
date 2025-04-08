@@ -44,9 +44,10 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
   # The interactive Rancher question will override this value if needed.
-  host: n8n.local
-  # Instead of hardcoding a TLS hosts list, use a dedicated field.
-  tlsSecretName: n8n-tls
+  host: n8n.intranet.sig.lan
+  # Use the exact TLS secret name here; note that it is now 'secretName'
+  secretName: n8n-secret-tls
+
 
 resources:
   limits:
