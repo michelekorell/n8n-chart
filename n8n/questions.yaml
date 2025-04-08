@@ -11,9 +11,15 @@ questions:
       - "1.84.3"
       - "1.83.2"
       - "1.82.3"
-  - variable: ingress.hosts[0].host
+  - variable: host
     label: Domain Name
     description: Your domain name (e.g., n8n.yourdomain.com)
     type: string
     required: true
-    default: "n8n.local" 
+    default: "n8n.local"
+  - variable: ingress.annotations.cert-manager\.io/cluster-issuer
+    label: Cluster Issuer
+    description: Name of the cert-manager cluster issuer
+    type: string
+    required: true
+    default: "intranet-sig-lan-ca-issuer" 
