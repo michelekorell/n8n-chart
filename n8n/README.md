@@ -55,7 +55,8 @@ helm install n8n n8n-chart/n8n \
 2. Navigate to Apps & Marketplace in Rancher
 3. Find "n8n Workflow Automation" and click Install
 4. Configure the following required fields:
-   - **n8n Version**: Select your preferred version (1.105.3 recommended)
+   - **Version Selection**: Choose "stable" (recommended) or "specific"
+   - **n8n Version**: Select specific version (only shown if "specific" is chosen)
    - **Encryption Key**: Required for data security
    - **Basic Auth**: Enable and set credentials for security
 
@@ -63,12 +64,19 @@ helm install n8n n8n-chart/n8n \
 
 ### Version Selection
 
-The chart supports multiple n8n versions through the `image.tag` parameter:
+The chart supports two version selection modes:
+
+1. **Stable Version** (default): Automatically uses the latest stable version (currently 1.105.3)
+2. **Specific Version**: Choose a specific n8n version
 
 ```yaml
+n8nVersion:
+  selection: "stable"  # Options: "stable" or "specific"
+  default: "1.105.3"   # Latest stable version
+
 image:
   repository: docker.n8n.io/n8nio/n8n
-  tag: "1.105.3"  # Default stable version
+  tag: "1.105.3"  # Used when selection is "specific"
 ```
 
 ### Essential Configuration

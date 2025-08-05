@@ -5,6 +5,7 @@ image:
   tag: "latest"
 
 n8nVersion:
+  selection: "specific"  # Use specific version
   default: "latest"
   selected: "latest"
 

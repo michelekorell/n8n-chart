@@ -5,6 +5,7 @@ image:
   tag: "1.105.3"
 
 n8nVersion:
+  selection: "stable"  # Use stable version
   default: "1.105.3"
   selected: "1.105.3"
 

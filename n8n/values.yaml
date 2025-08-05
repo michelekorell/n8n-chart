@@ -6,6 +6,9 @@ replicaCount: 1
 
 # n8n version configuration
 n8nVersion:
+  # Version selection: "stable" or "specific"
+  selection: "stable"
+  
   # Available versions for selection
   available:
     - "1.105.3"    # Latest stable version (default)
@@ -13,7 +16,7 @@ n8nVersion:
     - "1.84.3"     # Previous stable version
     - "1.83.2"     # Previous stable version
     - "1.82.3"     # Previous stable version
-    - "stable"     # Latest development version (use with caution)
+    - "latest"     # Latest development version (use with caution)
   
   # Default version to use (should be a stable version)
   default: "1.105.3"

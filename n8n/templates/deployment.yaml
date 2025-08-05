@@ -29,7 +29,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Values.n8nVersion.default | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:{{ if eq .Values.n8nVersion.selection "stable" }}{{ .Values.n8nVersion.default }}{{ else }}{{ .Values.image.tag | default .Values.n8nVersion.default }}{{ end }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: N8N_ENCRYPTION_KEY

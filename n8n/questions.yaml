@@ -1,9 +1,20 @@
 categories:
   - name: "n8n Configuration"
     questions:
+      - variable: n8nVersion.selection
+        label: "Version Selection"
+        description: "Choose between stable version or specific version"
+        type: enum
+        options:
+          - "stable"
+          - "specific"
+        default: "stable"
+        group: "n8n Configuration"
+        required: true
+      
       - variable: image.tag
         label: "n8n Version"
-        description: "Select the n8n version to deploy"
+        description: "Select the specific n8n version to deploy"
         type: enum
         options:
           - "1.105.3"
@@ -14,6 +25,7 @@ categories:
           - "latest"
         default: "1.105.3"
         group: "n8n Configuration"
+        show_if: "n8nVersion.selection=specific"
         required: true
       
       - variable: n8n.encryption.key
