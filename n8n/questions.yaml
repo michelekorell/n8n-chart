@@ -1,193 +1,161 @@
-categories:
-  - name: "n8n Configuration"
-    questions:
-      - variable: n8nVersion.selection
-        label: "Version Selection"
-        description: "Choose between stable version or specific version"
-        type: enum
-        options:
-          - "stable"
-          - "specific"
-        default: "stable"
-        group: "n8n Configuration"
-        required: true
-      
-      - variable: image.tag
-        label: "n8n Version"
-        description: "Select the specific n8n version to deploy"
-        type: enum
-        options:
-          - "1.105.3"
-          - "1.85.4"
-          - "1.84.3"
-          - "1.83.2"
-          - "1.82.3"
-          - "latest"
-        default: "1.105.3"
-        group: "n8n Configuration"
-        show_if: "n8nVersion.selection=specific"
-        required: true
-      
-      - variable: n8n.encryption.key
-        label: "Encryption Key"
-        description: "Required encryption key for n8n data security"
-        type: password
-        group: "n8n Configuration"
-        required: true
-      
-      - variable: n8n.basicAuth.enabled
-        label: "Enable Basic Authentication"
-        description: "Enable basic authentication for n8n access"
-        type: boolean
-        default: true
-        group: "n8n Configuration"
-      
-      - variable: n8n.basicAuth.user
-        label: "Basic Auth Username"
-        description: "Username for basic authentication"
-        type: string
-        default: "admin"
-        group: "n8n Configuration"
-        show_if: "n8n.basicAuth.enabled=true"
-      
-      - variable: n8n.basicAuth.password
-        label: "Basic Auth Password"
-        description: "Password for basic authentication"
-        type: password
-        group: "n8n Configuration"
-        show_if: "n8n.basicAuth.enabled=true"
-        required: true
-
-  - name: "Database Configuration"
-    questions:
-      - variable: n8n.database.type
-        label: "Database Type"
-        description: "Select the database type for n8n"
-        type: enum
-        options:
-          - "sqlite"
-          - "postgresdb"
-          - "mysqldb"
-        default: "sqlite"
-        group: "Database Configuration"
-      
-      - variable: n8n.database.postgresdb.host
-        label: "PostgreSQL Host"
-        description: "PostgreSQL database host"
-        type: string
-        group: "Database Configuration"
-        show_if: "n8n.database.type=postgresdb"
-      
-      - variable: n8n.database.postgresdb.database
-        label: "PostgreSQL Database Name"
-        description: "PostgreSQL database name"
-        type: string
-        default: "n8n"
-        group: "Database Configuration"
-        show_if: "n8n.database.type=postgresdb"
-      
-      - variable: n8n.database.postgresdb.user
-        label: "PostgreSQL Username"
-        description: "PostgreSQL database username"
-        type: string
-        default: "n8n"
-        group: "Database Configuration"
-        show_if: "n8n.database.type=postgresdb"
-      
-      - variable: n8n.database.postgresdb.password
-        label: "PostgreSQL Password"
-        description: "PostgreSQL database password"
-        type: password
-        group: "Database Configuration"
-        show_if: "n8n.database.type=postgresdb"
-
-  - name: "Resource Configuration"
-    questions:
-      - variable: replicaCount
-        label: "Replica Count"
-        description: "Number of n8n replicas to deploy"
-        type: int
-        default: 1
-        min: 1
-        max: 10
-        group: "Resource Configuration"
-      
-      - variable: resources.requests.cpu
-        label: "CPU Request"
-        description: "CPU request for n8n pods"
-        type: string
-        default: "500m"
-        group: "Resource Configuration"
-      
-      - variable: resources.requests.memory
-        label: "Memory Request"
-        description: "Memory request for n8n pods"
-        type: string
-        default: "512Mi"
-        group: "Resource Configuration"
-      
-      - variable: resources.limits.cpu
-        label: "CPU Limit"
-        description: "CPU limit for n8n pods"
-        type: string
-        default: "1000m"
-        group: "Resource Configuration"
-      
-      - variable: resources.limits.memory
-        label: "Memory Limit"
-        description: "Memory limit for n8n pods"
-        type: string
-        default: "4096Mi"
-        group: "Resource Configuration"
-
-  - name: "Storage Configuration"
-    questions:
-      - variable: persistence.enabled
-        label: "Enable Persistence"
-        description: "Enable persistent storage for n8n data"
-        type: boolean
-        default: true
-        group: "Storage Configuration"
-      
-      - variable: persistence.size
-        label: "Storage Size"
-        description: "Size of persistent storage"
-        type: string
-        default: "20Gi"
-        group: "Storage Configuration"
-        show_if: "persistence.enabled=true"
-      
-      - variable: persistence.storageClass
-        label: "Storage Class"
-        description: "Storage class to use for persistence"
-        type: string
-        group: "Storage Configuration"
-        show_if: "persistence.enabled=true"
-
-  - name: "Network Configuration"
-    questions:
-      - variable: ingress.enabled
-        label: "Enable Ingress"
-        description: "Enable ingress for external access"
-        type: boolean
-        default: true
-        group: "Network Configuration"
-      
-      - variable: ingress.domainName
-        label: "Domain Name"
-        description: "Domain name for n8n access"
-        type: string
-        default: "n8n.local"
-        group: "Network Configuration"
-        show_if: "ingress.enabled=true"
-      
-      - variable: service.type
-        label: "Service Type"
-        description: "Kubernetes service type"
-        type: enum
-        options:
-          - "ClusterIP"
-          - "NodePort"
-          - "LoadBalancer"
-        default: "ClusterIP"
-        group: "Network Configuration"
+questions:
+  - variable: n8nVersion.selection
+    label: "Version Selection"
+    description: "Choose between stable version or specific version"
+    type: enum
+    options:
+      - "stable"
+      - "specific"
+    default: "stable"
+    required: true
+  
+  - variable: image.tag
+    label: "n8n Version"
+    description: "Select the specific n8n version to deploy"
+    type: enum
+    options:
+      - "1.105.3"
+      - "1.85.4"
+      - "1.84.3"
+      - "1.83.2"
+      - "1.82.3"
+      - "latest"
+    default: "1.105.3"
+    show_if: "n8nVersion.selection=specific"
+    required: true
+  
+  - variable: n8n.encryption.key
+    label: "Encryption Key"
+    description: "Required encryption key for n8n data security"
+    type: password
+    required: true
+  
+  - variable: n8n.basicAuth.enabled
+    label: "Enable Basic Authentication"
+    description: "Enable basic authentication for n8n access"
+    type: boolean
+    default: true
+  
+  - variable: n8n.basicAuth.user
+    label: "Basic Auth Username"
+    description: "Username for basic authentication"
+    type: string
+    default: "admin"
+    show_if: "n8n.basicAuth.enabled=true"
+  
+  - variable: n8n.basicAuth.password
+    label: "Basic Auth Password"
+    description: "Password for basic authentication"
+    type: password
+    show_if: "n8n.basicAuth.enabled=true"
+    required: true
+  
+  - variable: n8n.database.type
+    label: "Database Type"
+    description: "Select the database type for n8n"
+    type: enum
+    options:
+      - "sqlite"
+      - "postgresdb"
+      - "mysqldb"
+    default: "sqlite"
+  
+  - variable: n8n.database.postgresdb.host
+    label: "PostgreSQL Host"
+    description: "PostgreSQL database host"
+    type: string
+    show_if: "n8n.database.type=postgresdb"
+  
+  - variable: n8n.database.postgresdb.database
+    label: "PostgreSQL Database Name"
+    description: "PostgreSQL database name"
+    type: string
+    default: "n8n"
+    show_if: "n8n.database.type=postgresdb"
+  
+  - variable: n8n.database.postgresdb.user
+    label: "PostgreSQL Username"
+    description: "PostgreSQL database username"
+    type: string
+    default: "n8n"
+    show_if: "n8n.database.type=postgresdb"
+  
+  - variable: n8n.database.postgresdb.password
+    label: "PostgreSQL Password"
+    description: "PostgreSQL database password"
+    type: password
+    show_if: "n8n.database.type=postgresdb"
+  
+  - variable: replicaCount
+    label: "Replica Count"
+    description: "Number of n8n replicas to deploy"
+    type: int
+    default: 1
+    min: 1
+    max: 10
+  
+  - variable: resources.requests.cpu
+    label: "CPU Request"
+    description: "CPU request for n8n pods"
+    type: string
+    default: "500m"
+  
+  - variable: resources.requests.memory
+    label: "Memory Request"
+    description: "Memory request for n8n pods"
+    type: string
+    default: "512Mi"
+  
+  - variable: resources.limits.cpu
+    label: "CPU Limit"
+    description: "CPU limit for n8n pods"
+    type: string
+    default: "1000m"
+  
+  - variable: resources.limits.memory
+    label: "Memory Limit"
+    description: "Memory limit for n8n pods"
+    type: string
+    default: "4096Mi"
+  
+  - variable: persistence.enabled
+    label: "Enable Persistence"
+    description: "Enable persistent storage for n8n data"
+    type: boolean
+    default: true
+  
+  - variable: persistence.size
+    label: "Storage Size"
+    description: "Size of persistent storage"
+    type: string
+    default: "20Gi"
+    show_if: "persistence.enabled=true"
+  
+  - variable: persistence.storageClass
+    label: "Storage Class"
+    description: "Storage class to use for persistence"
+    type: string
+    show_if: "persistence.enabled=true"
+  
+  - variable: ingress.enabled
+    label: "Enable Ingress"
+    description: "Enable ingress for external access"
+    type: boolean
+    default: true
+  
+  - variable: ingress.domainName
+    label: "Domain Name"
+    description: "Domain name for n8n access"
+    type: string
+    default: "n8n.local"
+    show_if: "ingress.enabled=true"
+  
+  - variable: service.type
+    label: "Service Type"
+    description: "Kubernetes service type"
+    type: enum
+    options:
+      - "ClusterIP"
+      - "NodePort"
+      - "LoadBalancer"
+    default: "ClusterIP"
