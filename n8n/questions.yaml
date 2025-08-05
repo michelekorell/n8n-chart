@@ -6,12 +6,13 @@ categories:
         description: "Select the n8n version to deploy"
         type: enum
         options:
+          - "1.105.3"
           - "1.85.4"
           - "1.84.3"
           - "1.83.2"
           - "1.82.3"
           - "latest"
-        default: "1.85.4"
+        default: "1.105.3"
         group: "n8n Configuration"
         required: true
       

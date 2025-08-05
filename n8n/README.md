@@ -15,7 +15,8 @@ A Helm chart for deploying n8n workflow automation tool on Kubernetes with suppo
 
 | Version | Stability | Description |
 |---------|-----------|-------------|
-| `1.85.4` | ✅ Stable | **Default** - Recommended for production |
+| `1.105.3` | ✅ Stable | **Default** - Latest stable version (recommended for production) |
+| `1.85.4` | ✅ Stable | Previous stable version |
 | `1.84.3` | ✅ Stable | Previous stable version |
 | `1.83.2` | ✅ Stable | Previous stable version |
 | `1.82.3` | ✅ Stable | Previous stable version |
@@ -54,7 +55,7 @@ helm install n8n n8n-chart/n8n \
 2. Navigate to Apps & Marketplace in Rancher
 3. Find "n8n Workflow Automation" and click Install
 4. Configure the following required fields:
-   - **n8n Version**: Select your preferred version (1.85.4 recommended)
+   - **n8n Version**: Select your preferred version (1.105.3 recommended)
    - **Encryption Key**: Required for data security
    - **Basic Auth**: Enable and set credentials for security
 
@@ -67,7 +68,7 @@ The chart supports multiple n8n versions through the `image.tag` parameter:
 ```yaml
 image:
   repository: docker.n8n.io/n8nio/n8n
-  tag: "1.85.4"  # Default stable version
+  tag: "1.105.3"  # Default stable version
 ```
 
 ### Essential Configuration
@@ -198,7 +199,7 @@ kubectl get pods -l app.kubernetes.io/name=n8n
 
 ```bash
 # Upgrade to a newer version
-helm upgrade n8n n8n-chart/n8n --set image.tag="1.85.4"
+helm upgrade n8n n8n-chart/n8n --set image.tag="1.105.3"
 
 # Rollback if needed
 helm rollback n8n

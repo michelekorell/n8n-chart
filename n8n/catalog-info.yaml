@@ -14,8 +14,8 @@ data:
     spec:
       displayName: "n8n Workflow Automation"
       description: "Deploy n8n workflow automation tool with multiple version support"
-      version: "2.0.33"
-      appVersion: "1.85.4"
+      version: "2.0.34"
+      appVersion: "1.105.3"
       maintainers:
         - name: Michele Korell
       keywords:
@@ -32,4 +32,5 @@ data:
         catalog.cattle.io/namespace: tools
         catalog.cattle.io/release-name: n8n
         catalog.cattle.io/ui-component: n8n
-        catalog.cattle.io/upstream-version: "1.85.4" 
+        catalog.cattle.io/upstream-version: "1.105.3"
+        catalog.cattle.io/stable: "true" 
