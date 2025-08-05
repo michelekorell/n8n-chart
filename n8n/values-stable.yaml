@@ -1,0 +1,31 @@
+# Stable version values for n8n 1.105.3
+# This file overrides the default values for the stable version
+
+image:
+  tag: "1.105.3"
+
+n8nVersion:
+  default: "1.105.3"
+  selected: "1.105.3"
+
+# Recommended settings for production use
+resources:
+  limits:
+    cpu: 1000m
+    memory: 4096Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+persistence:
+  enabled: true
+  size: 20Gi
+
+# Enable basic auth for security
+n8n:
+  basicAuth:
+    enabled: true
+  telemetry:
+    enabled: false
+  logs:
+    level: info 

@@ -21,7 +21,7 @@ version: 2.0.33
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "latest"
+appVersion: "1.105.3"
 
 keywords:
   - n8n
@@ -33,3 +33,13 @@ sources:
 maintainers:
   - name: Michele Korell
 icon: https://n8n.io/favicon.ico
+
+# Rancher catalog annotations
+annotations:
+  catalog.cattle.io/display-name: "n8n Workflow Automation"
+  catalog.cattle.io/certified: rancher
+  catalog.cattle.io/namespace: tools
+  catalog.cattle.io/release-name: n8n
+  catalog.cattle.io/ui-component: n8n
+  catalog.cattle.io/upstream-version: "1.105.3"
+  catalog.cattle.io/stable: "true"

@@ -1,0 +1,31 @@
+# Latest version values for n8n (development version)
+# WARNING: This version may be unstable and should be used for testing only
+
+image:
+  tag: "latest"
+
+n8nVersion:
+  default: "latest"
+  selected: "latest"
+
+# Conservative resource limits for development/testing
+resources:
+  limits:
+    cpu: 2000m
+    memory: 8192Mi
+  requests:
+    cpu: 1000m
+    memory: 1024Mi
+
+persistence:
+  enabled: true
+  size: 10Gi
+
+# Development-friendly settings
+n8n:
+  basicAuth:
+    enabled: false  # Disabled for easier development access
+  telemetry:
+    enabled: true   # Enable for development feedback
+  logs:
+    level: debug    # More verbose logging for development 

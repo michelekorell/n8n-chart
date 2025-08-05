@@ -4,15 +4,24 @@
 
 replicaCount: 1
 
+# n8n version configuration
+n8nVersion:
+  # Available versions for selection
+  available:
+    - "1.105.3"    # Latest stable version (default)
+    - "1.85.4"     # Previous stable version
+    - "1.84.3"     # Previous stable version
+    - "1.83.2"     # Previous stable version
+    - "1.82.3"     # Previous stable version
+    - "stable"     # Latest development version (use with caution)
+  
+  # Default version to use (should be a stable version)
+  default: "1.105.3"
+
 image:
   repository: docker.n8n.io/n8nio/n8n
-  # You can choose from the following versions:
-  # - latest
-  # - 1.85.4
-  # - 1.84.3
-  # - 1.83.2
-  # - 1.82.3
-  tag: "latest"
+  # The tag will be set based on n8nVersion.default or user selection
+  tag: "1.105.3"  # Default stable version
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
