@@ -14,6 +14,7 @@ questions:
     description: "Select the specific n8n version to deploy"
     type: enum
     options:
+      - "1.106.3"
       - "1.105.3"
       - "1.85.4"
       - "1.84.3"
