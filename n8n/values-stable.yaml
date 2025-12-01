@@ -1,13 +1,13 @@
-# Stable version values for n8n 1.105.3
+# Stable version values for n8n 1.121.3
 # This file overrides the default values for the stable version
 
 image:
-  tag: "1.105.3"
+  tag: "1.121.3"
 
 n8nVersion:
   selection: "stable"  # Use stable version
-  default: "1.105.3"
-  selected: "1.105.3"
+  default: "1.121.3"
+  selected: "1.121.3"
 
 # Recommended settings for production use
 resources:

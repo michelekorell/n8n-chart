@@ -119,7 +119,7 @@ spec:
             - name: N8N_SMTP_SSL
               value: {{ .Values.n8n.smtp.ssl | quote }}
             {{- end }}
-            # Essential n8n 1.82.3 settings
+            # Essential n8n settings (compatible with all versions)
             - name: N8N_WEBHOOK_TIMEOUT
               value: {{ .Values.n8n.webhook.timeout | quote }}
             - name: N8N_EXECUTION_TIMEOUT

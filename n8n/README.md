@@ -15,7 +15,9 @@ A Helm chart for deploying n8n workflow automation tool on Kubernetes with suppo
 
 | Version | Stability | Description |
 |---------|-----------|-------------|
-| `1.105.3` | ✅ Stable | **Default** - Latest stable version (recommended for production) |
+| `1.121.3` | ✅ Stable | **Default** - Latest stable version (recommended for production) |
+| `1.106.3` | ✅ Stable | Previous stable version |
+| `1.105.3` | ✅ Stable | Previous stable version |
 | `1.85.4` | ✅ Stable | Previous stable version |
 | `1.84.3` | ✅ Stable | Previous stable version |
 | `1.83.2` | ✅ Stable | Previous stable version |
@@ -66,17 +68,17 @@ helm install n8n n8n-chart/n8n \
 
 The chart supports two version selection modes:
 
-1. **Stable Version** (default): Automatically uses the latest stable version (currently 1.105.3)
+1. **Stable Version** (default): Automatically uses the latest stable version (currently 1.121.3)
 2. **Specific Version**: Choose a specific n8n version
 
 ```yaml
 n8nVersion:
   selection: "stable"  # Options: "stable" or "specific"
-  default: "1.105.3"   # Latest stable version
+  default: "1.121.3"   # Latest stable version
 
 image:
   repository: docker.n8n.io/n8nio/n8n
-  tag: "1.105.3"  # Used when selection is "specific"
+  tag: "1.121.3"  # Used when selection is "specific"
 ```
 
 ### Essential Configuration
@@ -207,7 +209,7 @@ kubectl get pods -l app.kubernetes.io/name=n8n
 
 ```bash
 # Upgrade to a newer version
-helm upgrade n8n n8n-chart/n8n --set image.tag="1.105.3"
+helm upgrade n8n n8n-chart/n8n --set image.tag="1.121.3"
 
 # Rollback if needed
 helm rollback n8n
