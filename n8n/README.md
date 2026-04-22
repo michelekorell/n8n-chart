@@ -7,22 +7,23 @@ A Helm chart for deploying n8n workflow automation tool on Kubernetes with suppo
 - **Multiple Version Support**: Deploy different n8n versions (stable and latest)
 - **Rancher Integration**: Optimized for Rancher catalog with user-friendly UI
 - **Production Ready**: Includes security, persistence, and monitoring configurations
-- **Flexible Database Support**: SQLite (default), PostgreSQL, and MySQL
+- **Flexible Database Support**: SQLite (default) and PostgreSQL; MySQL as application database is supported only for **n8n 1.x** images (n8n 2.0+ [dropped MySQL](https://docs.n8n.io/2-0-breaking-changes/))
 - **Customizable Resources**: Configurable CPU and memory limits
 - **Ingress Support**: Built-in ingress configuration for external access
 
-## Available Versions
+## Chart version vs n8n version
 
-| Version | Stability | Description |
-|---------|-----------|-------------|
-| `1.121.3` | ✅ Stable | **Default** - Latest stable version (recommended for production) |
-| `1.106.3` | ✅ Stable | Previous stable version |
-| `1.105.3` | ✅ Stable | Previous stable version |
-| `1.85.4` | ✅ Stable | Previous stable version |
-| `1.84.3` | ✅ Stable | Previous stable version |
-| `1.83.2` | ✅ Stable | Previous stable version |
-| `1.82.3` | ✅ Stable | Previous stable version |
-| `latest` | ⚠️ Development | Latest development version (use with caution) |
+The Helm chart `version` (for example `3.0.0`) is independent of the n8n Docker image tag. `Chart.yaml` `appVersion` and `catalog.cattle.io/upstream-version` describe the **default** n8n version in `values.yaml`; you can override the image with `n8nVersion` / `image.tag`.
+
+## Available Versions (image tags)
+
+| Version | Role | Description |
+|---------|------|-------------|
+| `2.17.3` | **Default stable** | n8n **2.x** — default when `n8nVersion.selection` is `stable` |
+| `1.123.16` | 1.x | Latest **n8n 1.x** (use with `selection: specific` to stay on 1.x) |
+| `1.121.3` | 1.x | Earlier 1.x |
+| `1.106.3` … `1.82.3` | 1.x | Older 1.x for rollback |
+| `latest` | ⚠️ Development | Floating tag (use with caution) |
 
 ## Quick Start
 
@@ -40,13 +41,15 @@ helm install n8n n8n-chart/n8n \
   --set n8n.basicAuth.user="admin" \
   --set n8n.basicAuth.password="your-password"
 
-# Install with specific version
+# Install with a specific version (must set selection to specific)
 helm install n8n n8n-chart/n8n \
-  --set image.tag="1.84.3" \
+  --set n8nVersion.selection=specific \
+  --set image.tag="1.123.16" \
   --set n8n.encryption.key="your-encryption-key"
 
 # Install with latest version (development)
 helm install n8n n8n-chart/n8n \
+  --set n8nVersion.selection=specific \
   --set image.tag="latest" \
   --set n8n.encryption.key="your-encryption-key"
 ```
@@ -68,17 +71,17 @@ helm install n8n n8n-chart/n8n \
 
 The chart supports two version selection modes:
 
-1. **Stable Version** (default): Automatically uses the latest stable version (currently 1.121.3)
-2. **Specific Version**: Choose a specific n8n version
+1. **Stable** (default): Uses `n8nVersion.default` (n8n 2.x unless you change it)
+2. **Specific**: Uses `image.tag` (for example `1.123.16` to stay on latest 1.x)
 
 ```yaml
 n8nVersion:
   selection: "stable"  # Options: "stable" or "specific"
-  default: "1.121.3"   # Latest stable version
+  default: "2.17.3"   # Used when selection is "stable"
 
 image:
   repository: docker.n8n.io/n8nio/n8n
-  tag: "1.121.3"  # Used when selection is "specific"
+  tag: "2.17.3"  # Used when selection is "specific"
 ```
 
 ### Essential Configuration
@@ -97,7 +100,9 @@ n8n:
 
 # Database configuration (SQLite is default)
   database:
-    type: sqlite  # Options: sqlite, postgresdb, mysqldb
+    type: sqlite  # Options: sqlite, postgresdb, mysqldb (mysqldb only with n8n 1.x images)
+  # Optional (n8n 2.x+): set to "true" or "false" to override N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS (e.g. if the pod fails on volume permissions)
+  # enforceSettingsFilePermissions: false  # optional boolean or string; omit for default
 ```
 
 ### Resource Configuration
@@ -163,7 +168,9 @@ n8n:
       password: "your-postgres-password"
 ```
 
-### MySQL
+### MySQL (n8n 1.x only)
+
+n8n **2.0+** no longer supports MySQL as the application database. This chart will **refuse to render** a deployment that combines `mysqldb` with a 2.x image tag. For n8n 1.x, you can still use:
 
 ```yaml
 n8n:
@@ -176,6 +183,8 @@ n8n:
       user: n8n
       password: "your-mysql-password"
 ```
+
+Use a **1.x** `image.tag` (for example `1.123.16`) with `n8nVersion.selection: specific`.
 
 ## Security Considerations
 
@@ -205,21 +214,28 @@ kubectl get pods -l app.kubernetes.io/name=n8n
 
 ## Upgrading
 
-### Between Versions
+### Between versions
+
+Back up the n8n data (PVC and/or workflow exports) before major upgrades, especially when moving from n8n 1.x to 2.x.
 
 ```bash
-# Upgrade to a newer version
-helm upgrade n8n n8n-chart/n8n --set image.tag="1.121.3"
+helm upgrade n8n n8n-chart/n8n
 
 # Rollback if needed
 helm rollback n8n
 ```
 
-### Version Compatibility
+### n8n 1.x to 2.x
+
+- Read [n8n v2.0 breaking changes](https://docs.n8n.io/2-0-breaking-changes/) (workflows, publishing, MySQL, security defaults, and more).
+- If you use **MySQL** as the n8n application database, migrate to **PostgreSQL** (or SQLite) before using a 2.x image.
+- **Rancher**: push the new chart to your cluster catalog, open the **n8n** app, **Upgrade**, select chart `3.x`, and confirm values (encryption key, ingress, `n8n.database.type`).
+
+### Version compatibility
 
 - Always backup your data before upgrading
 - Test upgrades in a non-production environment first
-- Check n8n release notes for breaking changes
+- Check [n8n release notes](https://docs.n8n.io/release-notes/) for breaking changes
 
 ## Support
 

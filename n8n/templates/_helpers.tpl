@@ -51,6 +51,17 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Resolved image tag (stable uses n8nVersion.default, specific uses image.tag).
+*/}}
+{{- define "n8n.imageTag" -}}
+{{- if eq .Values.n8nVersion.selection "stable" -}}
+{{- .Values.n8nVersion.default -}}
+{{- else -}}
+{{- .Values.image.tag | default .Values.n8nVersion.default -}}
+{{- end -}}
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "n8n.serviceAccountName" -}}
