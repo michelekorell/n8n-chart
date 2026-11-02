@@ -15,10 +15,10 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 3.0.0
+version: 3.0.1
 
 # This is the default n8n image version when using chart values (independent of chart version).
-appVersion: "2.17.3"
+appVersion: "2.29.1"
 
 keywords:
   - n8n
@@ -38,5 +38,5 @@ annotations:
   catalog.cattle.io/namespace: tools
   catalog.cattle.io/release-name: n8n
   catalog.cattle.io/ui-component: n8n
-  catalog.cattle.io/upstream-version: "2.17.3"
+  catalog.cattle.io/upstream-version: "2.29.1"
   catalog.cattle.io/stable: "true"

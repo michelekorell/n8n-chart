@@ -11,7 +11,8 @@ n8nVersion:
   
   # Available versions for selection
   available:
-    - "2.17.3"     # Default stable (n8n 2.x)
+    - "2.29.1"     # Default stable (n8n 2.x)
+    - "2.17.3"     # Previous 2.x
     - "1.123.16"   # Latest 1.x
     - "1.121.3"
     - "1.106.3"
@@ -23,12 +24,12 @@ n8nVersion:
     - "latest"     # Latest development version (use with caution)
   
   # Default when selection is "stable" (n8n 2.x)
-  default: "2.17.3"
+  default: "2.29.1"
 
 image:
   repository: docker.n8n.io/n8nio/n8n
   # When selection is "specific", this tag is used; otherwise n8nVersion.default is used
-  tag: "2.17.3"
+  tag: "2.29.1"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []

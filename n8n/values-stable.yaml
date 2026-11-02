@@ -1,11 +1,11 @@
 # Stable: default n8n 2.x (chart n8nVersion.default)
 
 image:
-  tag: "2.17.3"
+  tag: "2.29.1"
 
 n8nVersion:
   selection: "stable"
-  default: "2.17.3"
+  default: "2.29.1"
 
 # Recommended settings for production use
 resources:
