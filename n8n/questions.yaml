@@ -14,6 +14,7 @@ questions:
     description: "Select the specific n8n version to deploy"
     type: enum
     options:
+      - "2.45.7"
       - "2.29.1"
       - "2.17.3"
       - "1.123.16"
@@ -25,7 +26,7 @@ questions:
       - "1.83.2"
       - "1.82.3"
       - "latest"
-    default: "2.29.1"
+    default: "2.45.7"
     show_if: "n8nVersion.selection=specific"
     required: true
 

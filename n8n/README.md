@@ -13,13 +13,14 @@ A Helm chart for deploying n8n workflow automation tool on Kubernetes with suppo
 
 ## Chart version vs n8n version
 
-The Helm chart `version` (for example `3.0.1`) is independent of the n8n Docker image tag. `Chart.yaml` `appVersion` and `catalog.cattle.io/upstream-version` describe the **default** n8n version in `values.yaml`; you can override the image with `n8nVersion` / `image.tag`.
+The Helm chart `version` (for example `3.0.2`) is independent of the n8n Docker image tag. `Chart.yaml` `appVersion` and `catalog.cattle.io/upstream-version` describe the **default** n8n version in `values.yaml`; you can override the image with `n8nVersion` / `image.tag`.
 
 ## Available Versions (image tags)
 
 | Version | Role | Description |
 |---------|------|-------------|
-| `2.29.1` | **Default stable** | n8n **2.x** — default when `n8nVersion.selection` is `stable` |
+| `2.45.7` | **Default stable** | n8n **2.x** — default when `n8nVersion.selection` is `stable` |
+| `2.29.1` | 2.x | Previous 2.x |
 | `2.17.3` | 2.x | Previous 2.x |
 | `1.123.16` | 1.x | Latest **n8n 1.x** (use with `selection: specific` to stay on 1.x) |
 | `1.121.3` | 1.x | Earlier 1.x |
@@ -78,11 +79,11 @@ The chart supports two version selection modes:
 ```yaml
 n8nVersion:
   selection: "stable"  # Options: "stable" or "specific"
-  default: "2.29.1"   # Used when selection is "stable"
+  default: "2.45.7"   # Used when selection is "stable"
 
 image:
   repository: docker.n8n.io/n8nio/n8n
-  tag: "2.29.1"  # Used when selection is "specific"
+  tag: "2.45.7"  # Used when selection is "specific"
 ```
 
 ### Essential Configuration
